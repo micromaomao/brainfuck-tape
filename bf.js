@@ -39,6 +39,9 @@ tape.prototype.drawItem = function(it){
         this.allocSpaceTo(it);
     }
 };
+tape.prototype.get = function(){
+    return this.content[this.cursor];
+};
 tape.prototype.set = function(ct){
     this.content[this.cursor] = ct;
     this.drawItem(this.cursor);
@@ -80,12 +83,25 @@ machine.prototype.run = function(tap, onStop){
             return;
         }
         thi.nextStep();
-    }, 1);
+    }, 1000/this.program.length);
 };
 machine.prototype.nextStep = function(){
     var ch = this.program.charAt(this.csip);
     this.csip++;
-    // TODO: run something.
+    switch(ch){
+        case "<":
+            this.tap.move(-1);
+            break;
+        case ">":
+            this.tap.move(1);
+            break;
+        case "+":
+            this.tap.set(this.tap.get()+1);
+            break;
+        case "-":
+            this.tap.set(this.tap.get()-1);
+            break;
+    }
     this.selectChar(this.csip);
 };
 
