@@ -51,8 +51,51 @@ tape.prototype.rehiLight = function(){
     this._lastHi = this.cursor;
 };
 
+function machine(pTextarea){
+    this.programTextarea = pTextarea;
+};
+machine.prototype.selectChar = function(index){
+    var ele = this.programTextarea;
+    ele.setSelectionRange(index, index+1);
+};
+machine.prototype.run = function(tap, onStop){
+    if(this.programTextarea.readOnly){
+        alert("A program is alerady running.");
+        return;
+    }
+    this.tap = tap;
+    this.csip = 0; // This is the **NEXT** char to do with!
+    this.program = this.programTextarea.value;
+    if(this.program.length == 0){
+        onStop();
+        return;
+    }
+    this.programTextarea.readOnly = true;
+    var thi = this;
+    var cin = setInterval(function(){
+        if(thi.csip >= thi.program.length){
+            clearInterval(cin);
+            onStop();
+            thi.programTextarea.readOnly = false;
+            return;
+        }
+        thi.nextStep();
+    }, 1);
+};
+machine.prototype.nextStep = function(){
+    var ch = this.program.charAt(this.csip);
+    this.csip++;
+    // TODO: run something.
+    this.selectChar(this.csip);
+};
+
 function runBf(){
     var tap = new tape(document.getElementById('tape'));
+    var mc = new machine(document.getElementById('pgr'));
+    document.getElementById('run').disabled = true;
+    mc.run(tap,function(){
+        document.getElementById('run').disabled = false;
+    });
 }
 
 window.addEventListener("load", function(){
