@@ -45,7 +45,7 @@ tape.prototype.allocSpaceTo = function(mvbPos){
 tape.prototype.drawItem = function(it){
     if(this.doHyper){
         if(!this.drawHypered){
-            this.ele.innerHTML = "HyperFast mode not dumping tape.";
+            this.ele.innerHTML = "HyperFast mode don't dump any char on tape.";
             this.drawHypered = true;
         }
         return;
