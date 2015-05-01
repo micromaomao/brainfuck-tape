@@ -118,6 +118,13 @@ machine.prototype.run = function(tap, doHyper, onStop){
         onStop();
         return;
     }
+    var mtl = this.program.match(/\[/g);
+    var mtr = this.program.match(/\]/g);
+    if((mtl?mtl.length:0) != (mtr?mtr.length:0)){
+        this.stdout("\n[ and ] can't match.\n");
+        onStop();
+        return;
+    }
     this.programTextarea.readOnly = true;
     this.oA.readOnly = true;
     var thi = this;
@@ -196,6 +203,7 @@ machine.prototype.nextStep = function(){
             if(this.tap.get() == 0){
                 var mt = foundMatch("[", "]", izl, true);
                 if(mt === undefined){
+                    this.stdout("\n[ and ] can't match.\n");
                     break;
                 }
                 this.csip = mt + 1;
@@ -205,6 +213,7 @@ machine.prototype.nextStep = function(){
             if(this.tap.get() != 0){
                 var mt = foundMatch("]", "[", izl, false);
                 if(mt === undefined){
+                    this.stdout("\n[ and ] can't match.\n");
                     break;
                 }
                 this.csip = mt + 1;
