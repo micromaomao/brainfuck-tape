@@ -1,10 +1,11 @@
 function tape(element){
     this.ele = element;
     element.innerHTML = "";
-    this.cursor = 0;
+    this.cursor = -1;
     this.content = [];
     this.iele = [];
     this.upper = -1;
+    this.set(0);
 }
 tape.prototype.move = function(count){
     var mvbPos = this.cursor + count;
@@ -40,11 +41,15 @@ tape.prototype.drawItem = function(it){
     }
 };
 tape.prototype.get = function(){
-    this.allocSpaceTo(this.cursor);
+    if(this.cursor == -1){
+        this.cursor = 0;
+        this.allocSpaceTo(this.cursor);
+    }
     return this.content[this.cursor];
 };
 tape.prototype.set = function(ct){
-    if(this.cursor == 0){
+    if(this.cursor == -1){
+        this.cursor = 0;
         this.allocSpaceTo(this.cursor);
     }
     this.content[this.cursor] = ct;
