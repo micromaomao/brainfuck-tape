@@ -117,7 +117,9 @@ machine.prototype.run = function(tap, doHyper, onStop){
         onStop();
         return;
     }
-    if(this.program.match(/\[/g).length != this.program.match(/\]/g).length){
+    var mtl = this.program.match(/\[/g);
+    var mtr = this.program.match(/\]/g);
+    if((mtl?mtl.length:0) != (mtr?mtr.length:0)){
         this.stdout("\n[ and ] can't match.\n");
         onStop();
         return;
