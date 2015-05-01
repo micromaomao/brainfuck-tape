@@ -121,7 +121,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
     var mtl = this.program.match(/\[/g);
     var mtr = this.program.match(/\]/g);
     if((mtl?mtl.length:0) != (mtr?mtr.length:0)){
-        this.stdout("\n[ and ] can't match.\n");
+        alert("[ and ] can't match.");
         onStop();
         return;
     }
@@ -203,7 +203,7 @@ machine.prototype.nextStep = function(){
             if(this.tap.get() == 0){
                 var mt = foundMatch("[", "]", izl, true);
                 if(mt === undefined){
-                    this.stdout("\n[ and ] can't match.\n");
+                    alert("[ and ] can't match.");
                     break;
                 }
                 this.csip = mt + 1;
@@ -213,7 +213,7 @@ machine.prototype.nextStep = function(){
             if(this.tap.get() != 0){
                 var mt = foundMatch("]", "[", izl, false);
                 if(mt === undefined){
-                    this.stdout("\n[ and ] can't match.\n");
+                    alert("[ and ] can't match.");
                     break;
                 }
                 this.csip = mt + 1;
