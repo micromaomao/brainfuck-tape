@@ -185,6 +185,9 @@ machine.prototype.nextStep = function(){
                 this.csip = mt + 1;
             }
             break;
+        default:
+            this.nextStep();
+            return;
     }
     this.selectChar(this.csip);
 };
