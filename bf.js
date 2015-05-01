@@ -5,6 +5,7 @@ function tape(element){
     this.content = [];
     this.iele = [];
     this.upper = -1;
+    this.doHyper = false;
     this.set(0);
 }
 tape.prototype.move = function(count){
