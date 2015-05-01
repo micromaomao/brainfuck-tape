@@ -17,6 +17,7 @@ tape.prototype.move = function(count){
         this.content.splice(this.content.length - 1, -mvbPos);
         for(var it = 0; it <= this.upper; it ++)
             this.drawItem(it);
+        this.cursor = 0;
         this.rehiLight();
         return;
     }
