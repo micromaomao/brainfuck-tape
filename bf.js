@@ -10,7 +10,10 @@ function tape(element){
 tape.prototype.move = function(count){
     var mvbPos = this.cursor + count;
     if(mvbPos < 0){
-        mvbPos = 0;
+        if(!this.upper == 0){
+            this.move(this.upper);
+        }
+        return;
     }
     if(this.upper < mvbPos){
         this.allocSpaceTo(mvbPos);
