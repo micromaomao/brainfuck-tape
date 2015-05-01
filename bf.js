@@ -202,14 +202,32 @@ machine.prototype.getchar = function(){
     this.iA.value = this.iA.value.substr(1);
     return ch;
 };
+machine.prototype.stop = function(){
+    this.csip = this.program.length;
+}
 
 function runBf(){
     var tap = new tape(document.getElementById('tape'));
     var mc = new machine(document.getElementById('pgr'), document.getElementById('bfipt'), document.getElementById('bfout'));
     document.getElementById('run').disabled = true;
+    document.getElementById('stop').disabled = false;
+    var overt = false;
     mc.run(tap,function(){
+        overt = true;
         document.getElementById('run').disabled = false;
+        document.getElementById('stop').disabled = true;
     });
+    function fnc(){
+        document.getElementById('stop').removeEventListener('click', fnc);
+        if(overt){
+            return;
+        }
+        mc.stop();
+        overt = true;
+        document.getElementById('run').disabled = false;
+        document.getElementById('stop').disabled = true;
+    };
+    document.getElementById('stop').addEventListener('click', fnc);
 }
 
 window.addEventListener("load", function(){
