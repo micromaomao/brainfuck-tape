@@ -136,6 +136,12 @@ machine.prototype.run = function(tap, doHyper, onStop){
         onStop();
         return;
     }
+    var add = this.program.match(/\+/g);
+    var sub = this.program.match(/-/g);
+    var adp = this.program.match(/>/g);
+    var sup = this.program.match(/</g);
+    var inp = this.program.match(/,/g);
+    var oup = this.program.match(/\./g);
     var mtl = this.program.match(/\[/g);
     var mtr = this.program.match(/\]/g);
     if((mtl?mtl.length:0) != (mtr?mtr.length:0)){
@@ -147,7 +153,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
     this.oA.readOnly = true;
     var thi = this;
     var cin = setInterval(function(){
-        for(var i = 0; i < (doHyper?100000:1); i++){
+        for(var i = 0; i < (doHyper?1000:1); i++){
             if(thi.csip >= thi.program.length){
                 clearInterval(cin);
                 onStop();
@@ -157,7 +163,14 @@ machine.prototype.run = function(tap, doHyper, onStop){
             }
             thi.nextStep();
         }
-    }, 1000/this.program.length);
+    }, doHyper?1:(1000/((add?add.length:0) +
+                        (sub?sub.length:0) +
+                        (adp?adp.length:0) +
+                        (sup?sup.length:0) +
+                        (inp?inp.length:0) +
+                        (oup?oup.length:0) +
+                        (mtl?mtl.length:0) +
+                        (mtr?mtr.length:0))));
 };
 machine.prototype.nextStep = function(){
     var ch = this.program.charAt(this.csip);
