@@ -40,9 +40,14 @@ tape.prototype.drawItem = function(it){
     }
 };
 tape.prototype.get = function(){
+    this.allocSpaceTo(this.cursor);
     return this.content[this.cursor];
 };
 tape.prototype.set = function(ct){
+    if(this.cursor == -1){
+        this.cursor = 0;
+        this.allocSpaceTo(this.cursor);
+    }
     this.content[this.cursor] = ct;
     this.drawItem(this.cursor);
 };
