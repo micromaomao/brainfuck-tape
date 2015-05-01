@@ -160,12 +160,18 @@ machine.prototype.nextStep = function(){
         case "[":
             if(this.tap.get() == 0){
                 var mt = foundMatch("[", "]", izl, true);
+                if(mt === undefined){
+                    break;
+                }
                 this.csip = mt + 1;
             }
             break;
         case "]":
             if(this.tap.get() != 0){
                 var mt = foundMatch("]", "[", izl, false);
+                if(mt === undefined){
+                    break;
+                }
                 this.csip = mt + 1;
             }
             break;
