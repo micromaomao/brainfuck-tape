@@ -119,8 +119,8 @@ machine.prototype.run = function(tap, doHyper, onStop){
     }
     if(this.program.match(new RegExp("\\[","g")).length != this.program.match(new RegExp("\\]","g")).length){
         this.stderr("\[ and \] can't match.", true);
-		onStop();
-		return;
+        onStop();
+        return;
     }
     this.programTextarea.readOnly = true;
     this.oA.readOnly = true;
