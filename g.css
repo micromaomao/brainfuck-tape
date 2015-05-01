@@ -19,3 +19,10 @@
 .bf-tape-item-hi {
     background-color: #fff;
 }
+a {
+      text-decoration: inherit;
+      color: #127EE1;
+}
+a:hover {
+    color: #0c589d;
+}
