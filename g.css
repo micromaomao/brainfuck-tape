@@ -13,11 +13,32 @@
     height: 200px;
 }
 .bf-tape-item {
-    border: solid 1px #000;
+    border: solid 1px #5fcf80;
     display: inline-block;
+    margin: 4px;
+    padding: 4px;
+    min-width: 30px;
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    background-color: #CFF0D8;
+    transition: background-color 150ms, color 50ms;
+    position: relative;
 }
 .bf-tape-item-hi {
     background-color: #fff;
+    border: solid 1px #000;
+    color: #D88569;
+}
+.bf-tape-item-cha {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    padding: 2px;
+    color: #000;
+    opacity: 0.7;
+    font-size: 75%;
+    line-height: 1;
 }
 a {
       text-decoration: inherit;
