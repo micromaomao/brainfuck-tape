@@ -1,3 +1,8 @@
+body {
+    max-width: 750px;
+    margin: 4px auto 0px auto;
+}
+
 .bf-ipt {
     width: 100%;
     display: block;
@@ -46,4 +51,31 @@ a {
 }
 a:hover {
     color: #0c589d;
+}
+
+h1 {
+    font-size: 210%;
+    font-weight: lighter;
+}
+h2 {
+    font-size: 115%;
+    padding: 0;
+    margin: 6px 0 6px 4px;
+    font-weight: lighter;
+}
+h2:after {
+    content: ":";
+    opacity: 0.6;
+    font-size: 80%;
+}
+.man {
+    float: right;
+    padding: 0;
+    margin: 0 10px 0 0;
+}
+.pg-dv {
+    border-bottom: solid #ddd 1px;
+}
+.pg-dv h2 {
+    display: inline;
 }
