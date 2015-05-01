@@ -25,16 +25,27 @@ tape.prototype.allocSpaceTo = function(mvbPos){
     if(this.upper < mvbPos){
         for (var alc = this.upper + 1; alc <= mvbPos; alc++){
             this.content[alc] = 0;
+            if(this.doHyper){
+                this.iele[alc] = null;
+                continue;
+            }
             var iel = document.createElement('div');
             iel.className = "bf-tape-item";
             this.ele.appendChild(iel);
             this.iele[alc] = iel;
             this.drawItem(alc);
         }
+        this.upper = mvbPos;
     }
-    this.upper = mvbPos;
 };
 tape.prototype.drawItem = function(it){
+    if(this.doHyper){
+        if(!this.drawHypered){
+            this.ele.innerHTML = "HyperFast mode not dumping tape.";
+            this.drawHypered = true;
+        }
+        return;
+    }
     var ct = this.content[it];
     var lt = this.iele[it];
     if(lt){
@@ -66,6 +77,8 @@ tape.prototype.set = function(ct){
     this.drawItem(this.cursor);
 };
 tape.prototype.rehiLight = function(){
+    if(this.doHyper)
+        return;
     if(this._lastHi !== undefined){
         this.iele[this._lastHi].className = "bf-tape-item";
     }
@@ -79,16 +92,20 @@ function machine(pTextarea, iA, oA){
     this.oA = oA;
 };
 machine.prototype.selectChar = function(index){
+    if(this.tap.doHyper){
+        return;
+    }
     var ele = this.programTextarea;
     ele.setSelectionRange(index, index+1);
 };
-machine.prototype.run = function(tap, onStop){
+machine.prototype.run = function(tap, doHyper, onStop){
     if(this.programTextarea.readOnly){
         alert("A program is alerady running.");
         return;
     }
     this.oA.value = "";
     this.tap = tap;
+    this.tap.doHyper = doHyper;
     this.csip = 0; // This is the **NEXT** char to do with!
     this.program = this.programTextarea.value;
     if(this.program.length == 0){
@@ -99,14 +116,16 @@ machine.prototype.run = function(tap, onStop){
     this.oA.readOnly = true;
     var thi = this;
     var cin = setInterval(function(){
-        if(thi.csip >= thi.program.length){
-            clearInterval(cin);
-            onStop();
-            thi.programTextarea.readOnly = false;
-            thi.oA.readOnly = false;
-            return;
+        for(var i = 0; i < (doHyper?500:1); i++){
+            if(thi.csip >= thi.program.length){
+                clearInterval(cin);
+                onStop();
+                thi.programTextarea.readOnly = false;
+                thi.oA.readOnly = false;
+                return;
+            }
+            thi.nextStep();
         }
-        thi.nextStep();
     }, 1000/this.program.length);
 };
 machine.prototype.nextStep = function(){
@@ -212,7 +231,8 @@ function runBf(){
     document.getElementById('run').disabled = true;
     document.getElementById('stop').disabled = false;
     var overt = false;
-    mc.run(tap,function(){
+    var doHyper = document.getElementById('fast').checked;
+    mc.run(tap,doHyper,function(){
         overt = true;
         document.getElementById('run').disabled = false;
         document.getElementById('stop').disabled = true;
