@@ -117,6 +117,11 @@ machine.prototype.run = function(tap, doHyper, onStop){
         onStop();
         return;
     }
+    if(this.program.match(new RegExp("\\[","g")).length != this.program.match(new RegExp("\\]","g")).length){
+        this.stderr("\[ and \] can't match.", true);
+		onStop();
+		return;
+    }
     this.programTextarea.readOnly = true;
     this.oA.readOnly = true;
     var thi = this;
@@ -195,6 +200,7 @@ machine.prototype.nextStep = function(){
             if(this.tap.get() == 0){
                 var mt = foundMatch("[", "]", izl, true);
                 if(mt === undefined){
+					this.stderr("\[ and \] can't match.", false);
                     break;
                 }
                 this.csip = mt + 1;
@@ -204,6 +210,7 @@ machine.prototype.nextStep = function(){
             if(this.tap.get() != 0){
                 var mt = foundMatch("]", "[", izl, false);
                 if(mt === undefined){
+					this.stderr("\[ and \] can't match.", false);
                     break;
                 }
                 this.csip = mt + 1;
@@ -217,6 +224,9 @@ machine.prototype.nextStep = function(){
 };
 machine.prototype.stdout = function(out){
     this.oA.value += out;
+};
+machine.prototype.stderr = function(err, fatal){
+    this.oA.value += (fatal?"\[FATAL Error\] ":"\(Error: ") + out + (fatal?"":"\)");
 };
 machine.prototype.getchar = function(){
     if(this.iA.value.length == 0){
