@@ -1,6 +1,7 @@
 .bf-ipt {
     width: 100%;
     display: block;
+    resize: vertical;
 }
 .bf-tape {
     background-color: #ccc;
