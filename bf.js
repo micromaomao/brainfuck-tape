@@ -98,6 +98,27 @@ machine.prototype.nextStep = function(){
     var ch = this.program.charAt(this.csip);
     var izl = this.csip;
     this.csip++;
+    var thi = this;
+    function foundMatch(signP, signM, index, dir){
+        var ci = 0;
+        if(thi.program.charAt(index) != signP){
+            return undefined;
+        }
+        var ni = index;
+        while(dir?ni<thi.program.length:ni>=0){
+            var ct = thi.program.charAt(ni);
+            if(ct == signP){
+                ci++;
+            }else if(ct == signM){
+                ci--;
+            }
+            if(ci == 0){
+                return ni;
+            }
+            ni += (dir?1:-1);
+        }
+        return undefined;
+    };
     switch(ch){
         case "<":
             this.tap.move(-1);
@@ -106,10 +127,18 @@ machine.prototype.nextStep = function(){
             this.tap.move(1);
             break;
         case "+":
-            this.tap.set(this.tap.get()+1);
+            var tg = this.tap.get();
+            if(tg+1 > 255)
+                this.tap.set(0);
+            else
+                this.tap.set(tg+1);
             break;
         case "-":
-            this.tap.set(this.tap.get()-1);
+            var tg = this.tap.get();
+            if(tg-1 < 0)
+                this.tap.set(255);
+            else
+                this.tap.set(tg-1);
             break;
         case ".":
             this.stdout(String.fromCharCode(this.tap.get()));
@@ -122,6 +151,18 @@ machine.prototype.nextStep = function(){
                 return; 
             }
             this.tap.set(ch.charCodeAt(0));
+            break;
+        case "[":
+            if(this.tap.get() == 0){
+                var mt = foundMatch("[", "]", izl, true);
+                this.csip = mt + 1;
+            }
+            break;
+        case "]":
+            if(this.tap.get() != 0){
+                var mt = foundMatch("]", "[", izl, false);
+                this.csip = mt + 1;
+            }
             break;
     }
     this.selectChar(this.csip);
