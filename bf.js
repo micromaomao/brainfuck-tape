@@ -44,8 +44,7 @@ tape.prototype.get = function(){
     return this.content[this.cursor];
 };
 tape.prototype.set = function(ct){
-    if(this.cursor == -1){
-        this.cursor = 0;
+    if(this.cursor == 0){
         this.allocSpaceTo(this.cursor);
     }
     this.content[this.cursor] = ct;
@@ -59,8 +58,10 @@ tape.prototype.rehiLight = function(){
     this._lastHi = this.cursor;
 };
 
-function machine(pTextarea){
+function machine(pTextarea, iA, oA){
     this.programTextarea = pTextarea;
+    this.iA = iA;
+    this.oA = oA;
 };
 machine.prototype.selectChar = function(index){
     var ele = this.programTextarea;
@@ -71,6 +72,7 @@ machine.prototype.run = function(tap, onStop){
         alert("A program is alerady running.");
         return;
     }
+    this.oA.value = "";
     this.tap = tap;
     this.csip = 0; // This is the **NEXT** char to do with!
     this.program = this.programTextarea.value;
@@ -79,12 +81,14 @@ machine.prototype.run = function(tap, onStop){
         return;
     }
     this.programTextarea.readOnly = true;
+    this.oA.readOnly = true;
     var thi = this;
     var cin = setInterval(function(){
         if(thi.csip >= thi.program.length){
             clearInterval(cin);
             onStop();
             thi.programTextarea.readOnly = false;
+            thi.oA.readOnly = false;
             return;
         }
         thi.nextStep();
@@ -92,6 +96,7 @@ machine.prototype.run = function(tap, onStop){
 };
 machine.prototype.nextStep = function(){
     var ch = this.program.charAt(this.csip);
+    var izl = this.csip;
     this.csip++;
     switch(ch){
         case "<":
@@ -106,13 +111,36 @@ machine.prototype.nextStep = function(){
         case "-":
             this.tap.set(this.tap.get()-1);
             break;
+        case ".":
+            this.stdout(String.fromCharCode(this.tap.get()));
+            break;
+        case ",":
+            var ch = this.getchar();
+            if(ch === undefined){
+                this.csip = izl;
+                this.iA.select();
+                return; 
+            }
+            this.tap.set(ch.charCodeAt(0));
+            break;
     }
     this.selectChar(this.csip);
+};
+machine.prototype.stdout = function(out){
+    this.oA.value += out;
+};
+machine.prototype.getchar = function(){
+    if(this.iA.value.length == 0){
+        return undefined;
+    }
+    var ch = this.iA.value.substr(0,1);
+    this.iA.value = this.iA.value.substr(1);
+    return ch;
 };
 
 function runBf(){
     var tap = new tape(document.getElementById('tape'));
-    var mc = new machine(document.getElementById('pgr'));
+    var mc = new machine(document.getElementById('pgr'), document.getElementById('bfipt'), document.getElementById('bfout'));
     document.getElementById('run').disabled = true;
     mc.run(tap,function(){
         document.getElementById('run').disabled = false;
