@@ -36,6 +36,13 @@ tape.prototype.drawItem = function(it){
     var lt = this.iele[it];
     if(lt){
         lt.innerHTML = ct;
+        var clt = String.fromCharCode(ct);
+        if(clt.match(/^[\u0020-\u007e\u0080\u0082-\u008c\u008e\u0091-\u00ff]$/)){
+            var cha = document.createElement('div');
+            cha.textContent = clt;
+            cha.className = "bf-tape-item-cha";
+            lt.appendChild(cha);
+        }
     }else{
         this.allocSpaceTo(it);
     }
