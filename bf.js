@@ -147,7 +147,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
     this.oA.readOnly = true;
     var thi = this;
     var cin = setInterval(function(){
-        for(var i = 0; i < (doHyper?500:1); i++){
+        for(var i = 0; i < (doHyper?100000:1); i++){
             if(thi.csip >= thi.program.length){
                 clearInterval(cin);
                 onStop();
