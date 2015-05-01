@@ -10,9 +10,13 @@ function tape(element){
 tape.prototype.move = function(count){
     var mvbPos = this.cursor + count;
     if(mvbPos < 0){
-        if(!this.upper == 0){
-            this.move(this.upper);
-        }
+        this.allocSpaceTo(this.upper - mvbPos);
+        for(var i = 0; i < -mvbPos; i ++)
+            this.content.splice(0, 0, 0);
+        this.content.splice(this.content.length - 1, -mvbPos);
+        for(var it = 0; it <= this.upper; it ++)
+            this.drawItem(it);
+        this.rehiLight();
         return;
     }
     if(this.upper < mvbPos){
