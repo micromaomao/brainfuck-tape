@@ -1,0 +1,21 @@
+.bf-ipt {
+    width: 100%;
+    display: block;
+    resize: vertical;
+}
+.bf-tape {
+    background-color: #ccc;
+    padding: 1px;
+    margin: 1px;
+    min-height: 20px;
+}
+.bf-pgr {
+    height: 200px;
+}
+.bf-tape-item {
+    border: solid 1px #000;
+    display: inline-block;
+}
+.bf-tape-item-hi {
+    background-color: #fff;
+}

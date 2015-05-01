@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+    <head>
+        <title>BrainFuck Turing machine</title>
+        <link rel="stylesheet" href="g.css">
+        <script src="bf.js"></script>
+    </head>
+    <body>
+        <h1>BrainFuck Turing machine</h1>
+        <h2>Here is your tape</h2>
+        <div id="tape" class="bf-tape"></div>
+        <h2>Here is your program</h2>
+        <textarea id="pgr" class="bf-ipt bf-pgr">++++++++[&gt;++++[&gt;++&gt;+++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;+&gt;+&gt;-&gt;&gt;+[&lt;]&lt;-]&gt;&gt;.&gt;---.+++++++..+++.&gt;&gt;.&lt;-.&lt;.+++.------.--------.&gt;&gt;+.&gt;++.</textarea>
+        <h2>Input goes here</h2>
+        <textarea id="bfipt" class="bf-ipt"></textarea>
+        <h2>Output goes here</h2>
+        <textarea id="bfout" class="bf-ipt"></textarea>
+        <button id="run" class="bf-run">Run</button>
+    </body>
+</html>
