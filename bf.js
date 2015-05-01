@@ -1,3 +1,21 @@
+window.alert = function(ale){
+    var dI = document.createElement('div');
+    dI.className = "dh-alert";
+    dI.textContent = ale;
+    var clo = document.createElement('div');
+    clo.className = "dh-alert-close";
+    clo.innerHTML = "Close";
+    dI.appendChild(clo);
+    document.body.appendChild(dI);
+    var dB = document.createElement('div');
+    dB.className = "dh-alert-bg";
+    document.body.appendChild(dB);
+    clo.addEventListener('click', function(){
+        dI.remove();
+        dB.remove();
+    });
+};
+
 function tape(element){
     this.ele = element;
     element.innerHTML = "";
