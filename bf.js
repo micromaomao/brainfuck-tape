@@ -136,6 +136,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
         onStop();
         return;
     }
+    var zlc = this.program.match(/[\[\]\+\-\.,<>]/g).length;
     var mtl = this.program.match(/\[/g);
     var mtr = this.program.match(/\]/g);
     if((mtl?mtl.length:0) != (mtr?mtr.length:0)){
@@ -147,7 +148,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
     this.oA.readOnly = true;
     var thi = this;
     var cin = setInterval(function(){
-        for(var i = 0; i < (doHyper?100000:1); i++){
+        for(var i = 0; i < (doHyper?10000:1); i++){
             if(thi.csip >= thi.program.length){
                 clearInterval(cin);
                 onStop();
@@ -157,7 +158,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
             }
             thi.nextStep();
         }
-    }, 1000/this.program.length);
+    }, doHyper?1:Math.min(3000/zlc, 600));
 };
 machine.prototype.nextStep = function(){
     var ch = this.program.charAt(this.csip);
