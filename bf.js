@@ -153,7 +153,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
     this.oA.readOnly = true;
     var thi = this;
     var cin = setInterval(function(){
-        for(var i = 0; i < (doHyper?1000:1); i++){
+        for(var i = 0; i < (doHyper?10000:1); i++){
             if(thi.csip >= thi.program.length){
                 clearInterval(cin);
                 onStop();
@@ -163,7 +163,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
             }
             thi.nextStep();
         }
-    }, doHyper?1:(1000/((add?add.length:0) +
+    }, doHyper?1:(1250/((add?add.length:0) +
                         (sub?sub.length:0) +
                         (adp?adp.length:0) +
                         (sup?sup.length:0) +
