@@ -158,7 +158,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
             }
             thi.nextStep();
         }
-    }, doHyper?1:(1250/zlc));
+    }, doHyper?1:(3000/zlc));
 };
 machine.prototype.nextStep = function(){
     var ch = this.program.charAt(this.csip);
