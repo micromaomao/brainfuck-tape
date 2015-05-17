@@ -216,7 +216,11 @@ machine.prototype.nextStep = function(){
                 this.iA.select();
                 return; 
             }
-            this.tap.set(ch.charCodeAt(0));
+            var charcode = ch.charCodeAt(0);
+            while(charcode > 255){
+                charcode-=256;
+            }
+            this.tap.set(charcode);
             break;
         case "[":
             if(this.tap.get() == 0){
