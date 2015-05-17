@@ -48,7 +48,6 @@ tape.prototype.allocSpaceTo = function(mvbPos){
     if(this.upper < mvbPos){
         for (var alc = this.upper + 1; alc <= mvbPos; alc++){
             this.content[alc] = 0;
-            this.iele[alc] = null;
             var iel = document.createElement('div');
             iel.className = "bf-tape-item";
             this.ele.appendChild(iel);
