@@ -1,3 +1,7 @@
+// BrainFuck Tape
+// Copyright Wtm <micromaomao@gmail.com>
+//           Sunbread <xh3061895@gmail.com>
+// MIT Licensed. See LICENSE for more info.
 window.alert = function(ale){
     var dI = document.createElement('div');
     dI.className = "dh-alert";
@@ -21,14 +25,16 @@ function tape(element){
     element.innerHTML = "";
     this.cursor = -1;
     this.content = [];
+    // DOMElements of tape
     this.iele = [];
+    // The top tape block alloced
     this.upper = -1;
-    this.doHyper = false;
-    this.set(0);
 }
 tape.prototype.move = function(count){
+    // The place to move on
     var mvbPos = this.cursor + count;
     if(mvbPos < 0){
+        // Entire tape move right.
         this.allocSpaceTo(this.upper - mvbPos);
         for(var i = 0; i < -mvbPos; i ++)
             this.content.splice(0, 0, 0);
@@ -49,10 +55,6 @@ tape.prototype.allocSpaceTo = function(mvbPos){
     if(this.upper < mvbPos){
         for (var alc = this.upper + 1; alc <= mvbPos; alc++){
             this.content[alc] = 0;
-            if(this.doHyper){
-                this.iele[alc] = null;
-                continue;
-            }
             var iel = document.createElement('div');
             iel.className = "bf-tape-item";
             this.ele.appendChild(iel);
@@ -63,18 +65,12 @@ tape.prototype.allocSpaceTo = function(mvbPos){
     }
 };
 tape.prototype.drawItem = function(it){
-    if(this.doHyper){
-        if(!this.drawHypered){
-            this.ele.innerHTML = "HyperFast mode not dumping tape.";
-            this.drawHypered = true;
-        }
-        return;
-    }
     var ct = this.content[it];
     var lt = this.iele[it];
     if(lt){
         lt.innerHTML = ct;
         var clt = String.fromCharCode(ct);
+        // If it is a normal ASCII char, show it!
         if(clt.match(/^[\u0020-\u007e\u0080\u0082-\u008c\u008e\u0091-\u00ff]$/)){
             var cha = document.createElement('div');
             cha.textContent = clt;
@@ -86,6 +82,7 @@ tape.prototype.drawItem = function(it){
     }
 };
 tape.prototype.get = function(){
+    // Is tape init?
     if(this.cursor == -1){
         this.cursor = 0;
         this.allocSpaceTo(this.cursor);
@@ -93,16 +90,16 @@ tape.prototype.get = function(){
     return this.content[this.cursor];
 };
 tape.prototype.set = function(ct){
+    // Is tape init?
     if(this.cursor == -1){
         this.cursor = 0;
         this.allocSpaceTo(this.cursor);
     }
     this.content[this.cursor] = ct;
+    // Don't forget to redraw it.
     this.drawItem(this.cursor);
 };
 tape.prototype.rehiLight = function(){
-    if(this.doHyper)
-        return;
     if(this._lastHi !== undefined){
         this.iele[this._lastHi].className = "bf-tape-item";
     }
@@ -110,15 +107,14 @@ tape.prototype.rehiLight = function(){
     this._lastHi = this.cursor;
 };
 
+// Textarea of program, Textarea of input, Textarea of output.
 function machine(pTextarea, iA, oA){
     this.programTextarea = pTextarea;
     this.iA = iA;
     this.oA = oA;
 };
+// It support IE and chrome. Other not tested.
 machine.prototype.selectChar = function(index){
-    if(this.tap.doHyper){
-        return;
-    }
     var ele = this.programTextarea;
     ele.setSelectionRange(index, index+1);
 };
@@ -129,8 +125,8 @@ machine.prototype.run = function(tap, doHyper, onStop){
     }
     this.oA.value = "";
     this.tap = tap;
-    this.tap.doHyper = doHyper;
-    this.csip = 0; // This is the **NEXT** char to do with!
+    // This is the **NEXT** char to do with!
+    this.csip = 0;
     this.program = this.programTextarea.value;
     if(this.program.length == 0){
         onStop();
@@ -139,6 +135,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
     var zlc = this.program.match(/[\[\]\+\-\.,<>]/g).length;
     var mtl = this.program.match(/\[/g);
     var mtr = this.program.match(/\]/g);
+    // Precheck
     if((mtl?mtl.length:0) != (mtr?mtr.length:0)){
         alert("[ and ] can't match.");
         onStop();
@@ -160,6 +157,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
         }
     }, doHyper?1:Math.min(3000/zlc, 600));
 };
+// Run a command and set csip to the next command.
 machine.prototype.nextStep = function(){
     var ch = this.program.charAt(this.csip);
     var izl = this.csip;
@@ -194,6 +192,7 @@ machine.prototype.nextStep = function(){
             break;
         case "+":
             var tg = this.tap.get();
+            // Value overflow.
             if(tg+1 > 255)
                 this.tap.set(0);
             else
@@ -201,6 +200,7 @@ machine.prototype.nextStep = function(){
             break;
         case "-":
             var tg = this.tap.get();
+            // Value overflow.
             if(tg-1 < 0)
                 this.tap.set(255);
             else
@@ -216,7 +216,11 @@ machine.prototype.nextStep = function(){
                 this.iA.select();
                 return; 
             }
-            this.tap.set(ch.charCodeAt(0));
+            var charcode = ch.charCodeAt(0);
+            while(charcode > 255){
+                charcode-=256;
+            }
+            this.tap.set(charcode);
             break;
         case "[":
             if(this.tap.get() == 0){
