@@ -1,3 +1,7 @@
+// BrainFuck Tape
+// Copyright Wtm <micromaomao@gmail.com>
+//           Sunbread <xh3061895@gmail.com>
+// MIT Licensed. See LICENSE for more info.
 window.alert = function(ale){
     var dI = document.createElement('div');
     dI.className = "dh-alert";
