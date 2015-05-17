@@ -23,7 +23,6 @@ function tape(element){
     this.content = [];
     this.iele = [];
     this.upper = -1;
-    this.doHyper = false;
     this.set(0);
 }
 tape.prototype.move = function(count){
@@ -49,10 +48,6 @@ tape.prototype.allocSpaceTo = function(mvbPos){
     if(this.upper < mvbPos){
         for (var alc = this.upper + 1; alc <= mvbPos; alc++){
             this.content[alc] = 0;
-            if(this.doHyper){
-                this.iele[alc] = null;
-                continue;
-            }
             var iel = document.createElement('div');
             iel.className = "bf-tape-item";
             this.ele.appendChild(iel);
@@ -63,13 +58,6 @@ tape.prototype.allocSpaceTo = function(mvbPos){
     }
 };
 tape.prototype.drawItem = function(it){
-    if(this.doHyper){
-        if(!this.drawHypered){
-            this.ele.innerHTML = "HyperFast mode not dumping tape.";
-            this.drawHypered = true;
-        }
-        return;
-    }
     var ct = this.content[it];
     var lt = this.iele[it];
     if(lt){
@@ -101,8 +89,6 @@ tape.prototype.set = function(ct){
     this.drawItem(this.cursor);
 };
 tape.prototype.rehiLight = function(){
-    if(this.doHyper)
-        return;
     if(this._lastHi !== undefined){
         this.iele[this._lastHi].className = "bf-tape-item";
     }
@@ -116,9 +102,6 @@ function machine(pTextarea, iA, oA){
     this.oA = oA;
 };
 machine.prototype.selectChar = function(index){
-    if(this.tap.doHyper){
-        return;
-    }
     var ele = this.programTextarea;
     ele.setSelectionRange(index, index+1);
 };
@@ -129,7 +112,6 @@ machine.prototype.run = function(tap, doHyper, onStop){
     }
     this.oA.value = "";
     this.tap = tap;
-    this.tap.doHyper = doHyper;
     this.csip = 0; // This is the **NEXT** char to do with!
     this.program = this.programTextarea.value;
     if(this.program.length == 0){
