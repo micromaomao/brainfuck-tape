@@ -266,6 +266,11 @@ machine.prototype.nextStep = function(){
             if(this.funtable[ch]){
                 // csip push stack, jump to function
                 this.stack.push(izl);
+                if(this.stack.length > 65535){
+                    alert("OMG! Stack overflowed! In order not to crash your browser, we'll stop your program now.");
+                    this.csip = this.program.length;
+                    return;
+                }
                 this.csip = this.funtable[ch];
             }
             this.nextStep();
