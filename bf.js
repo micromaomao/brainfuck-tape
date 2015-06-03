@@ -320,4 +320,15 @@ function runBf(){
 
 window.addEventListener("load", function(){
     document.getElementById('run').addEventListener("click", runBf);
+    var request = new XMLHttpRequest();
+    request.open('GET', 'example.bf', true);
+    request.onload = function() {
+      if (request.status == 200) {
+        document.getElementById('pgr').innerText = request.responseText;
+      }
+    };
+    request.onerror = function() {
+};
+
+request.send();
 });
