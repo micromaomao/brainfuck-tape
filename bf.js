@@ -112,6 +112,9 @@ function machine(pTextarea, iA, oA){
     this.programTextarea = pTextarea;
     this.iA = iA;
     this.oA = oA;
+    // The Interrupt vector table for Brainfuck function
+    this.funtable = [];
+    this.stack = [];
 };
 // It support IE and chrome. Other not tested.
 machine.prototype.selectChar = function(index){
@@ -242,7 +245,34 @@ machine.prototype.nextStep = function(){
                 this.csip = mt + 1;
             }
             break;
+        case "(":
+            var mt = foundMatch("(", ")", izl, true);
+            if(mt === undefined){
+                alert("In this mode, ( and ) is used for function define. See commands manual for more info.");
+                break;
+            }
+            this.funtable[this.program.charAt(izl+1)] = izl+2;
+            this.csip = mt + 1;
+            break;
+        case ")":
+            if(this.stack.length > 0){
+                this.csip = this.stack.pop()+1;
+            }else{
+                // End main function!
+                this.csip = this.program.length;
+            }
+            break;
         default:
+            if(this.funtable[ch]){
+                // csip push stack, jump to function
+                this.stack.push(izl);
+                if(this.stack.length > 65535){
+                    alert("OMG! Stack overflowed! In order not to crash your browser, we'll stop your program now.");
+                    this.csip = this.program.length;
+                    return;
+                }
+                this.csip = this.funtable[ch];
+            }
             this.nextStep();
             return;
     }
@@ -290,4 +320,15 @@ function runBf(){
 
 window.addEventListener("load", function(){
     document.getElementById('run').addEventListener("click", runBf);
+    var request = new XMLHttpRequest();
+    request.open('GET', 'example.bf', true);
+    request.onload = function() {
+        if (request.status == 200) {
+            document.getElementById('pgr').value = request.responseText;
+        }
+    };
+    request.onerror = function() {
+    };
+    request.send();
 });
+
