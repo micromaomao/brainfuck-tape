@@ -112,3 +112,10 @@ h2:after {
     left: 0;
     z-index: 998;
 }
+pre {
+    border-left: solid #999 2px;
+    margin: 8px;
+    padding: 4px;
+    background-color: #eee;
+    font-size: 16px;
+}
