@@ -323,12 +323,12 @@ window.addEventListener("load", function(){
     var request = new XMLHttpRequest();
     request.open('GET', 'example.bf', true);
     request.onload = function() {
-      if (request.status == 200) {
-        document.getElementById('pgr').innerText = request.responseText;
-      }
+        if (request.status == 200) {
+            document.getElementById('pgr').value = request.responseText;
+        }
     };
     request.onerror = function() {
-};
-
-request.send();
+    };
+    request.send();
 });
+
