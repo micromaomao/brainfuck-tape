@@ -6,6 +6,8 @@ body {
 .bf-ipt {
     width: 100%;
     display: block;
+}
+#pgr {
     resize: vertical;
 }
 .bf-tape {
@@ -118,4 +120,25 @@ pre {
     padding: 4px;
     background-color: #eee;
     font-size: 16px;
+}
+textarea {
+    min-height: 60px;
+    outline: 0;
+    border: 0;
+    font-size: 14px;
+    color: #333;
+    border-left: solid #999 2px;
+    border-top: solid #e0e0e0 1px;
+    border-bottom: solid #e0e0e0 1px;
+    resize: none;
+}
+textarea:focus {
+    background-color: #eee;
+}
+*::selection {
+    background: rgba(18, 126, 225, 0.18);
+}
+#pgr::selection {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.80);
 }
