@@ -135,7 +135,7 @@ machine.prototype.run = function(tap, doHyper, onStop){
         onStop();
         return;
     }
-    var zlc = this.program.match(/[\[\]\+\-\.,<>]/g).length;
+    var zlc = this.program.match(/[\[\]\+\-\.,<>\(\)]/g).length;
     var mtl = this.program.match(/\[/g);
     var mtr = this.program.match(/\]/g);
     // Precheck
@@ -248,7 +248,7 @@ machine.prototype.nextStep = function(){
         case "(":
             var mt = foundMatch("(", ")", izl, true);
             if(mt === undefined){
-                alert("In this mode, ( and ) is used for function define. See commands manual for more info.");
+                alert("( and ) is used for function define. See commands manual for more info.");
                 break;
             }
             this.funtable[this.program.charAt(izl+1)] = izl+2;
